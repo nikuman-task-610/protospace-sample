@@ -1,0 +1,22 @@
+<header xmlns:th="http://www.thymeleaf.org" th:fragment="header" class="header">
+  <div class="inner">
+    <div class="nav">
+      <div class="nav__left">
+        <a th:href="@{/}">
+          <img th:src="@{/images/logo.png}" class="logo" alt="Logo" />
+        </a>
+      </div>
+      <div class="nav__right" th:if="${#authorization.expression('isAuthenticated()')}">
+         <form th:action="@{/logout}" method="post" style="display: inline-block;">
+              <input class="nav__btn" type="submit" value="ログアウト"/>
+          </form>
+        <a th:href="@{/}" class="nav__btn">New Proto</a>
+      </div>
+
+      <div class="nav__right" th:if="${#authorization.expression('!isAuthenticated()')}">
+        <a th:href="@{/users/login}" class="nav__btn">ログイン</a>
+        <a th:href="@{/users/sign_up}" class="nav__btn">新規登録</a>
+      </div>
+    </div>
+  </div>
+</header>
