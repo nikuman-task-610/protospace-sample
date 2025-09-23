@@ -25,7 +25,7 @@
 | title      | VARCHAR(100) | NOT NULL              |
 | catch_copy | TEXT         | NOT NULL              |
 | concept    | TEXT         | NOT NULL              |
-| user       | REFERENCES   | NOT NULL, FOREIGN KEY |
+| user_id    | REFERENCES   | NOT NULL, FOREIGN KEY |
 
 ### アソシエーション:
 
@@ -38,8 +38,8 @@
 | --------- | ---------- | --------------------- |
 | id        | SERIAL     | PRIMARY KEY           |
 | content   | TEXT       | NOT NULL.             |
-| prototype | REFERENCES | NOT NULL, FOREIGN KEY |
-| user      | REFERENCES | NOT NULL, FOREIGN KEY |
+| prototype_id | REFERENCES | NOT NULL, FOREIGN KEY |
+| user_id   | REFERENCES | NOT NULL, FOREIGN KEY |
 
 ### アソシエーション:
 
