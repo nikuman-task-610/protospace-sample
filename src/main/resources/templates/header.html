@@ -10,7 +10,7 @@
          <form th:action="@{/logout}" method="post" style="display: inline-block;">
               <input class="nav__btn" type="submit" value="ログアウト"/>
           </form>
-        <a th:href="@{/}" class="nav__btn">New Proto</a>
+        <a th:href="@{/prototypes/new}" class="nav__btn">New Proto</a>
       </div>
 
       <div class="nav__right" th:if="${#authorization.expression('!isAuthenticated()')}">

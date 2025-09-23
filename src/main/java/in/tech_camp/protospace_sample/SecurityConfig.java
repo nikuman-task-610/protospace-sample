@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/css/**", "/images/**", "/", "/users/sign_up", "/users/login").permitAll()
+                        .requestMatchers("/css/**", "/images/**", "/","/prototypes/{id:[0-9]+}", "/users/{id:[0-9]+}", "/users/sign_up", "/users/login", "/prototypes/*/image").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login

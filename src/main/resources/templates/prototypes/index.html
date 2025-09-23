@@ -18,11 +18,10 @@
             さん
           </p>
         </div> 
-        <!-- ログインしているときは上記を表示する -->
 
         <div class="card__wrapper">
-          <div class="card">
-            <!-- 投稿機能実装後、部分テンプレートでプロトタイプ投稿一覧を表示する  -->
+          <div th:each="prototype : ${prototypes}" class="card">
+            <div th:replace="~{prototypes/prototype :: content(prototype=${prototype})}"></div>
           </div>
         </div>
       </div>

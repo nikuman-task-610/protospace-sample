@@ -10,13 +10,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import in.tech_camp.protospace_sample.entity.PrototypeEntity;
 import in.tech_camp.protospace_sample.entity.UserEntity;
 import in.tech_camp.protospace_sample.form.UserForm;
 import in.tech_camp.protospace_sample.repository.UserRepository;
 import in.tech_camp.protospace_sample.service.UserService;
 import lombok.AllArgsConstructor;
+
 
 
 
@@ -74,6 +77,17 @@ public class UserController {
   public String showLogin() {
       return "users/login";
   }
+
+  @GetMapping("/users/{userId}")
+  public String showMypage(@PathVariable("userId") Integer userId, Model model) {
+      UserEntity user = userRepository.findById(userId);
+      List<PrototypeEntity> prototypes = user.getPrototypes();
+
+      model.addAttribute("name", user.getName());
+      model.addAttribute("prototypes", prototypes);
+      return "users/detail";
+  }
+  
   
   
 }
