@@ -25,6 +25,9 @@
 | title      | VARCHAR(100) | NOT NULL              |
 | catch_copy | TEXT         | NOT NULL              |
 | concept    | TEXT         | NOT NULL              |
+| image_name | VARCHAR(255) | NOT NULL              |
+| image_type | VARCHAR(100) | NOT NULL              |
+| image_data | BYTEA        | NOT NULL              |
 | user_id    | REFERENCES   | NOT NULL, FOREIGN KEY |
 
 ### アソシエーション:
@@ -34,12 +37,12 @@
 
 ## comments テーブル
 
-| カラム名   | データ型     | 制約                  |
-| --------- | ---------- | --------------------- |
-| id        | SERIAL     | PRIMARY KEY           |
-| content   | TEXT       | NOT NULL.             |
+| カラム名      | データ型     | 制約                  |
+| ------------ | ---------- | --------------------- |
+| id           | SERIAL     | PRIMARY KEY           |
+| content      | TEXT       | NOT NULL.             |
 | prototype_id | REFERENCES | NOT NULL, FOREIGN KEY |
-| user_id   | REFERENCES | NOT NULL, FOREIGN KEY |
+| user_id      | REFERENCES | NOT NULL, FOREIGN KEY |
 
 ### アソシエーション:
 
