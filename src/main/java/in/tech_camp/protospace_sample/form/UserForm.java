@@ -28,7 +28,7 @@ public class UserForm {
 
   @NotBlank
   private String position;
-
+ 
   private String passwordConfirmation;
 
   public void validatePasswordConfirmation(BindingResult result) {

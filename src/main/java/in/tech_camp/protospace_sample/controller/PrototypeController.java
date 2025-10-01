@@ -13,10 +13,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.tech_camp.protospace_sample.custom_user.CustomUserDetail;
@@ -26,6 +28,8 @@ import in.tech_camp.protospace_sample.repository.PrototypeRepository;
 import in.tech_camp.protospace_sample.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+
+
 
 
 @Controller
@@ -54,6 +58,10 @@ public class PrototypeController {
             @AuthenticationPrincipal CustomUserDetail currentUser, 
             Model model, 
             RedirectAttributes redirectAttributes) {
+
+        if (prototypeForm.getImageFile() == null || prototypeForm.getImageFile().isEmpty()) {
+        result.rejectValue("imageFile", "null");
+    }
 
         if (result.hasErrors()) {
             List<String> errorMessages = result.getAllErrors().stream()
@@ -119,6 +127,67 @@ public class PrototypeController {
         PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
         model.addAttribute("prototype", prototype);
         return "prototypes/detail";
+    }
+
+    @GetMapping("/prototypes/{prototypeId}/edit")
+    public String editPrototype(@PathVariable("prototypeId") Integer prototypeId, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+        PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+
+        if (!prototype.getUser().getId().equals(currentUser.getId())) {
+        return "redirect:/";  // またはエラーページへリダイレクト
+    }
+        PrototypeForm prototypeForm = new PrototypeForm();
+        prototypeForm.setTitle(prototype.getTitle());
+        prototypeForm.setCatchCopy(prototype.getCatchCopy());
+        prototypeForm.setConcept(prototype.getConcept());
+
+      model.addAttribute("prototypeForm", prototypeForm);
+      model.addAttribute("prototypeId", prototypeId);
+      model.addAttribute("prototype", prototype);
+      return "prototypes/edit";
+    }
+    
+    @PostMapping("/prototypes/{prototypeId}/update")
+    public String updatePrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult result, @PathVariable("prototypeId") Integer prototypeId, Model model) {
+        
+        if (result.hasErrors()) {
+            List<String> errorMessages = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            model.addAttribute("errorMessages", errorMessages);
+
+            model.addAttribute("prototypeForm", prototypeForm);
+            model.addAttribute("prototypeId", prototypeId);
+            return "prototypes/edit";
+        }
+        PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+        prototype.setTitle(prototypeForm.getTitle());
+        prototype.setCatchCopy(prototypeForm.getCatchCopy());
+        prototype.setConcept(prototypeForm.getConcept());
+    
+    // 画像ファイルがアップロードされた場合のみ画像を更新
+    if (prototypeForm.getImageFile() != null && !prototypeForm.getImageFile().isEmpty()) {
+       try {
+            MultipartFile imageFile = prototypeForm.getImageFile();
+            prototype.setImageName(imageFile.getOriginalFilename());
+            prototype.setImageType(imageFile.getContentType());
+            prototype.setImageData(imageFile.getBytes());  // ← try-catch内で安全に実行
+            
+            prototypeRepository.update(prototype);
+        } catch (IOException e) {
+            // エラー処理
+            model.addAttribute("errorMessage", "画像のアップロードに失敗しました");
+            model.addAttribute("prototypeId", prototypeId);
+            model.addAttribute("prototype", prototype);
+            model.addAttribute("prototype", prototype);
+            return "prototypes/edit";
+        }
+    } else {
+        // 画像以外のデータのみ更新
+        prototypeRepository.updateWithoutImage(prototype);
+    }
+    
+    return "redirect:/prototypes/" + prototypeId;
     }
     
 }
