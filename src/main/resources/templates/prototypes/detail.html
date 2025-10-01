@@ -15,7 +15,7 @@
           <a th:href="@{/}" class="prototype__user" th:text="'by ' + ${prototype.user.name}"></a>
           <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id}">
             <div class="prototype__manage">
-              <a th:href="@{/}" class="prototype__btn">編集する</a>
+              <a th:href="@{/prototypes/{id}/edit(id=${prototype.id})}" class="prototype__btn">編集する</a>
               <form
                 th:action="@{/}"
                 method="post"

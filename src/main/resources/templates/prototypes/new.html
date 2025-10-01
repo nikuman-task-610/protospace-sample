@@ -11,7 +11,7 @@
       <div class="inner">
         <div class="form__wrapper">
           <h2 class="page-heading">新規プロトタイプ投稿</h2>
-          <div th:replace="~{prototypes/form :: form(actionUrl=@{/prototypes}, prototypeForm=${prototypeForm})}"></div>
+          <div th:replace="~{prototypes/form :: form(actionUrl=@{/prototypes}, prototypeForm=${prototypeForm}, prototype=null)}"></div>
         </div>
       </div>
     </div>

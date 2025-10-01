@@ -17,10 +17,7 @@ public class ImageValidator implements ConstraintValidator<ValidImage, Multipart
     public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
         // ファイルが選択されていない場合
         if (file == null || file.isEmpty()) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("画像ファイルは必須です")
-                   .addConstraintViolation();
-            return false;
+            return true;  
         }
         
         // ファイルサイズチェック
