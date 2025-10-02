@@ -32,6 +32,7 @@ import lombok.AllArgsConstructor;
 
 
 
+
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
@@ -189,5 +190,23 @@ public class PrototypeController {
     
     return "redirect:/prototypes/" + prototypeId;
     }
+
+    @PostMapping("/prototypes/{prototypeId}/delete")
+    public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId, @AuthenticationPrincipal CustomUserDetail currentUser) {
+         PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+
+        if (!prototype.getUser().getId().equals(currentUser.getId())) {
+        return "redirect:/";
+    }
+
+        try {
+          prototypeRepository.deleteById(prototypeId);
+        } catch (Exception e) {
+            System.out.println("エラー：" + e);
+            return "redirect:/";
+        }
+        return "redirect:/";
+    }
+    
     
 }
