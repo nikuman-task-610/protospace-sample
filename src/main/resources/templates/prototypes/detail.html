@@ -17,8 +17,8 @@
             <div class="prototype__manage">
               <a th:href="@{/prototypes/{id}/edit(id=${prototype.id})}" class="prototype__btn">編集する</a>
               <form
-                th:action="@{/}"
-                method="post"
+                th:action="@{/prototypes/{prototypeId}/delete(prototypeId=${prototype.id})}"
+                th:method="post"
                 class="prototype__btn delete-btn"
               >
                 <input

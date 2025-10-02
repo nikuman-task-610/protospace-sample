@@ -2,6 +2,7 @@ package in.tech_camp.protospace_sample.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.One;
@@ -46,4 +47,7 @@ public interface PrototypeRepository {
 
   @Update("UPDATE prototypes SET title = #{title}, catch_copy = #{catchCopy}, concept = #{concept}, image_name = #{imageName}, image_type = #{imageType}, image_data = #{imageData} WHERE id = #{id}")
   void update(PrototypeEntity prototype);
+
+  @Delete("DELETE FROM prototypes WHERE id = #{id}")
+  void deleteById(Integer id);
 }
