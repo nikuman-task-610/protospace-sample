@@ -18,7 +18,7 @@
     ></a>
     <p class="card__summary" th:text="${prototype.catchCopy}" ></p>
     <a
-      th:href="@{/}"
+      th:href="@{/users/{userId}(userId=${prototype.user.id})}"
       class="card__user"
       th:text="'by' + ${prototype.user.name}"
     ></a>
