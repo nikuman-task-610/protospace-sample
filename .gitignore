@@ -19,3 +19,23 @@ gradle-app.setting
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# 機密情報を含む設定ファイル
+src/main/resources/application.properties
+src/main/resources/application-*.properties
+
+# Mac
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
