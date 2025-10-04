@@ -43,12 +43,11 @@
             </div>
           </div>
           <div class="prototype__comments">
-            
             <div th:if="${#authorization.expression('isAuthenticated()')}">
-              <form th:action="@{/}" method="post" th:object="${commentForm}">
+              <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" method="post" th:object="${commentForm}">
                 <div class="field">
                   <label for="content">コメント</label><br />
-                  <input type="text" id="text" />
+                  <input type="text" id="text" th:field="*{content}">
                 </div>
                 <div class="actions">
                   <input type="submit" class="form__btn" value="送信する" />
@@ -56,13 +55,13 @@
               </form>
             </div>
            
-            <!-- 投稿に紐づくコメントを一覧する処理を記述する -->
             <ul class="comments_lists">
-              <li class="comments_list">
-                <a th:href="@{/}" class="comment_user"></a>
-              </li>
+              <li class="comments_list" th:each="comment : ${comments}">
+                <span th:text="${comment.content}"></span>
+                <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.name}" class="comment_user"></a>
+             </li>
             </ul>
-            <!-- 投稿に紐づくコメントを一覧する処理を記述する -->
+            
           </div>
         </div>
       </div>

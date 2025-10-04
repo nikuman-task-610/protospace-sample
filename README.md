@@ -40,7 +40,7 @@
 | カラム名      | データ型     | 制約                  |
 | ------------ | ---------- | --------------------- |
 | id           | SERIAL     | PRIMARY KEY           |
-| content      | TEXT       | NOT NULL.             |
+| content      | TEXT       | NOT NULL              |
 | prototype_id | REFERENCES | NOT NULL, FOREIGN KEY |
 | user_id      | REFERENCES | NOT NULL, FOREIGN KEY |
 
