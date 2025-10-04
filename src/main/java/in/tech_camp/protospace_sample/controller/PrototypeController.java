@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.tech_camp.protospace_sample.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_sample.entity.PrototypeEntity;
+import in.tech_camp.protospace_sample.form.CommentForm;
 import in.tech_camp.protospace_sample.form.PrototypeForm;
 import in.tech_camp.protospace_sample.repository.PrototypeRepository;
 import in.tech_camp.protospace_sample.repository.UserRepository;
@@ -126,7 +127,11 @@ public class PrototypeController {
     @GetMapping("/prototypes/{prototypeId}")
     public String showPrototypeDetail(@PathVariable("prototypeId") Integer prototypeId, Model model) {
         PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+        CommentForm commentForm = new CommentForm();
+
         model.addAttribute("prototype", prototype);
+        model.addAttribute("commentForm", commentForm);
+        model.addAttribute("comments", prototype.getComments());
         return "prototypes/detail";
     }
 
