@@ -140,7 +140,7 @@ public class PrototypeController {
         PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
 
         if (!prototype.getUser().getId().equals(currentUser.getId())) {
-        return "redirect:/";  // またはエラーページへリダイレクト
+        return "redirect:/";  
     }
         PrototypeForm prototypeForm = new PrototypeForm();
         prototypeForm.setTitle(prototype.getTitle());
