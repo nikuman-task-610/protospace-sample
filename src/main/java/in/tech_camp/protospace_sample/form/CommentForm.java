@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class CommentForm {
-  @NotBlank
+  @NotBlank(message = "Content can't be blank")
   private String content;
 }

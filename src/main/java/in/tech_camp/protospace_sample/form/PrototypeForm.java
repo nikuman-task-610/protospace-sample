@@ -9,13 +9,13 @@ import lombok.Data;
 @Data
 public class PrototypeForm {
   
-  @NotBlank
+  @NotBlank(message = "Title can't be blank")
   private String title;
 
-  @NotBlank
+  @NotBlank(message = "CatchCopy can't be blank")
   private String catchCopy;
 
-  @NotBlank
+  @NotBlank(message = "Concept can't be blank")
   private String concept;
 
   private Integer userId;
@@ -23,6 +23,6 @@ public class PrototypeForm {
   private String imageType;
   private byte[] imageData;
 
-  @ValidImage
+  @ValidImage(message = "ImageFile can't be blank")
   private MultipartFile imageFile;
 }
