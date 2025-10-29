@@ -16,8 +16,8 @@ public class UserForm {
   @Email(message = "Email should be valid")
   private String email;
 
-  @NotBlank(message = "Password can't be blank")
-  @Length(min = 6, message = "Password should be at least 6 characters")
+  @NotBlank(message = "EncryptedPassword can't be blank")
+  @Length(min = 6, message = "EncryptedPassword should be at least 6 characters")
   private String encryptedPassword;
 
   @NotBlank(message = "Profile can't be blank")
@@ -32,7 +32,8 @@ public class UserForm {
   private String passwordConfirmation;
 
   public void validatePasswordConfirmation(BindingResult result) {
-      if (!encryptedPassword.equals(passwordConfirmation)) {
+      if (encryptedPassword != null && !encryptedPassword.isBlank() 
+        && !encryptedPassword.equals(passwordConfirmation)) {
         result.rejectValue("passwordConfirmation", "error.user", "Password confirmation doesn't match Password");
       }
   }
