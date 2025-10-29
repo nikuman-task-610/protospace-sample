@@ -27,6 +27,8 @@ import in.tech_camp.protospace_sample.form.CommentForm;
 import in.tech_camp.protospace_sample.form.PrototypeForm;
 import in.tech_camp.protospace_sample.repository.PrototypeRepository;
 import in.tech_camp.protospace_sample.repository.UserRepository;
+import in.tech_camp.protospace_sample.validation.ValidationPriority1;
+import in.tech_camp.protospace_sample.validation.ValidationPriority2;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -55,15 +57,11 @@ public class PrototypeController {
 
     @PostMapping("/prototypes")
     public String createPrototype(
-            @Valid @ModelAttribute("prototypeForm") PrototypeForm prototypeForm, 
+            @Validated(ValidationPriority1.class) @ModelAttribute("prototypeForm") PrototypeForm prototypeForm, 
             BindingResult result,
             @AuthenticationPrincipal CustomUserDetail currentUser, 
             Model model, 
             RedirectAttributes redirectAttributes) {
-
-        if (prototypeForm.getImageFile() == null || prototypeForm.getImageFile().isEmpty()) {
-        result.rejectValue("imageFile", "null");
-    }
 
         if (result.hasErrors()) {
             List<String> errorMessages = result.getAllErrors().stream()
@@ -154,7 +152,7 @@ public class PrototypeController {
     }
     
     @PostMapping("/prototypes/{prototypeId}/update")
-    public String updatePrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult result, @PathVariable("prototypeId") Integer prototypeId, Model model) {
+    public String updatePrototype(@ModelAttribute("prototypeForm") @Validated(ValidationPriority2.class) PrototypeForm prototypeForm, BindingResult result, @PathVariable("prototypeId") Integer prototypeId, Model model) {
         
         if (result.hasErrors()) {
             List<String> errorMessages = result.getAllErrors().stream()
@@ -177,7 +175,7 @@ public class PrototypeController {
             MultipartFile imageFile = prototypeForm.getImageFile();
             prototype.setImageName(imageFile.getOriginalFilename());
             prototype.setImageType(imageFile.getContentType());
-            prototype.setImageData(imageFile.getBytes());  // ← try-catch内で安全に実行
+            prototype.setImageData(imageFile.getBytes()); 
             
             prototypeRepository.update(prototype);
         } catch (IOException e) {
