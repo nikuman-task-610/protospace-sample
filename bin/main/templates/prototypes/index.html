@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Protospace</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div th:insert="~{header :: header}"></div>
+
+    <main class="main">
+      <div class="inner">
+        
+        <div class="greeting" th:if="${#authorization.expression('isAuthenticated()')}">
+          <p>
+            こんにちは、
+            <a th:href="@{/}" th:text="${#authentication.principal.user.name}"></a>
+            さん
+          </p>
+        </div> 
+
+        <div class="card__wrapper">
+          <div th:each="prototype : ${prototypes}" class="card">
+            <div th:replace="~{prototypes/prototype :: content(prototype=${prototype})}"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div th:insert="~{footer :: footer}"></div>
+  </body>
+</html>
