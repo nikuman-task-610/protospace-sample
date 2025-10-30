@@ -42,7 +42,7 @@ public class UserController {
   public String createUser(@ModelAttribute("userForm") @Validated() UserForm userForm, BindingResult result, Model model) {
       userForm.validatePasswordConfirmation(result);
       if (userRepository.existsByEmail(userForm.getEmail())) {
-        result.rejectValue("email", "null");
+        result.rejectValue("email", "error.user", "Email already exists");
       }
 
       if (result.hasErrors()) {
