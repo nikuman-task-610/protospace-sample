@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Protospace</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div th:insert="~{header :: header}"></div>
+
+    <main class="main">
+      <div class="inner">
+        <div class="prototype__wrapper">
+          <p class="prototype__hedding" th:text="${prototype.title}"></p>
+          <a th:href="@{/users/{userId}(userId=${prototype.user.id})}" class="prototype__user" th:text="'by ' + ${prototype.user.name}"></a>
+          <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id}">
+            <div class="prototype__manage">
+              <a th:href="@{/prototypes/{id}/edit(id=${prototype.id})}" class="prototype__btn">編集する</a>
+              <form
+                th:action="@{/prototypes/{prototypeId}/delete(prototypeId=${prototype.id})}"
+                th:method="post"
+                class="prototype__btn delete-btn"
+              >
+                <input
+                 type="submit"
+                  class="prototype__btn delete-btn"
+                  value="削除する"
+               />
+             </form>
+            </div>
+          </div>
+          <div class="prototype__image">
+            <img alt="プロトタイプの画像" th:src="@{/prototypes/{prototypeId}/image(prototypeId=${prototype.id})}" class="prototype__img">
+          </div>
+          <div class="prototype__body">
+            <div class="prototype__detail">
+              <p class="detail__title">キャッチコピー</p>
+              <p class="detail__message" th:text="${prototype.catchCopy}"></p>
+            </div>
+            <div class="prototype__detail">
+              <p class="detail__title">コンセプト</p>
+              <p class="detail__message" th:text="${prototype.concept}"></p>
+            </div>
+          </div>
+          <div class="prototype__comments">
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+              <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" method="post" th:object="${commentForm}">
+                <div class="field">
+                  <label for="content">コメント</label><br />
+                  <input type="text" id="text" th:field="*{content}">
+                </div>
+                <div class="actions">
+                  <input type="submit" class="form__btn" value="送信する" />
+                </div>
+              </form>
+            </div>
+           
+            <ul class="comments_lists">
+              <li class="comments_list" th:each="comment : ${comments}">
+                <span th:text="${comment.content}"></span>
+                <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.name}" class="comment_user"></a>
+             </li>
+            </ul>
+            
+          </div>
+        </div>
+      </div>
+    </main>
+    <div th:insert="~{footer :: footer}"></div>
+  </body>
+</html>
