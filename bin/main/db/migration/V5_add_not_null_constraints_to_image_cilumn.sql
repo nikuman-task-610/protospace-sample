@@ -1,0 +1,3 @@
+ALTER TABLE prototypes ALTER COLUMN image_name SET NOT NULL;
+ALTER TABLE prototypes ALTER COLUMN image_type SET NOT NULL;
+ALTER TABLE prototypes ALTER COLUMN image_data SET NOT NULL;
