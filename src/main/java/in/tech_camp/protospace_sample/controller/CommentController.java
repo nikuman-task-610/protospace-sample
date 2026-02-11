@@ -1,5 +1,6 @@
 package in.tech_camp.protospace_sample.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -7,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.tech_camp.protospace_sample.custom_user.CustomUserDetail;
@@ -30,6 +32,10 @@ public class CommentController {
   public String createComment(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("commentForm") @Validated CommentForm commentForm, BindingResult result, @AuthenticationPrincipal CustomUserDetail currentUser, RedirectAttributes redirectAttributes) {
 
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+
+    if (prototype == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
 
     if (result.hasErrors()) {
         redirectAttributes.addFlashAttribute("commentError", "コメントを入力してください");

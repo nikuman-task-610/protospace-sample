@@ -29,7 +29,6 @@ import in.tech_camp.protospace_sample.repository.PrototypeRepository;
 import in.tech_camp.protospace_sample.repository.UserRepository;
 import in.tech_camp.protospace_sample.validation.ValidationPriority1;
 import in.tech_camp.protospace_sample.validation.ValidationPriority2;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 

@@ -18,6 +18,7 @@ import in.tech_camp.protospace_sample.entity.UserEntity;
 import in.tech_camp.protospace_sample.form.UserForm;
 import in.tech_camp.protospace_sample.repository.UserRepository;
 import in.tech_camp.protospace_sample.service.UserService;
+import in.tech_camp.protospace_sample.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
 
@@ -39,7 +40,7 @@ public class UserController {
   }
 
   @PostMapping("/users")
-  public String createUser(@ModelAttribute("userForm") @Validated() UserForm userForm, BindingResult result, Model model) {
+  public String createUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm, BindingResult result, Model model) {
       userForm.validatePasswordConfirmation(result);
       if (userRepository.existsByEmail(userForm.getEmail())) {
         result.rejectValue("email", "error.user", "Email already exists");
@@ -87,7 +88,5 @@ public class UserController {
       model.addAttribute("prototypes", prototypes);
       return "users/detail";
   }
-  
-  
   
 }

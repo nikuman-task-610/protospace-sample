@@ -3,6 +3,7 @@ package in.tech_camp.protospace_sample.entity;
 import java.util.List;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 public class UserEntity {
@@ -13,6 +14,8 @@ public class UserEntity {
   private String profile;
   private String occupation;
   private String position;
+  @ToString.Exclude
   private List<PrototypeEntity> prototypes;
+  @ToString.Exclude
   private List<CommentEntity> comments;
 }

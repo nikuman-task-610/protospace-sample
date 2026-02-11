@@ -1,10 +1,7 @@
 package in.tech_camp.protospace_sample.form;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.validation.BindingResult;
 
 import in.tech_camp.protospace_sample.factory.UserFormFactory;
+import in.tech_camp.protospace_sample.validation.ValidationOrder;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -37,7 +35,7 @@ public class UserFormUnitTest {
     class ユーザー作成ができる場合 {
       @Test
       public void nameとemailとencryptedPasswordとpasswordConfirmationとprofileとoccupationとpositionが存在すれば登録できる() {
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(0, violations.size());
       }
 
@@ -49,7 +47,7 @@ public class UserFormUnitTest {
       @Test
       public void nameが空の場合バリデーションエラーが発生する() {
       userForm.setName("");
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(1, violations.size());
       assertEquals("Name can't be blank", violations.iterator().next().getMessage());
       }
@@ -57,7 +55,7 @@ public class UserFormUnitTest {
       @Test
       public void emailが空の場合バリデーションエラーが発生する() {
       userForm.setEmail("");
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(1, violations.size());
       assertEquals("Email can't be blank", violations.iterator().next().getMessage());
       }
@@ -65,19 +63,9 @@ public class UserFormUnitTest {
       @Test
       public void encryptedPasswordが空の場合バリデーションエラーが発生する() {
       userForm.setEncryptedPassword("");
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
-      assertEquals(2, violations.size());
-      List<ConstraintViolation<UserForm>> encryptedPasswordErrors = violations.stream()
-        .filter(v -> v.getPropertyPath().toString().equals("encryptedPassword"))
-        .collect(Collectors.toList());
-      
-      assertEquals(2, encryptedPasswordErrors.size());
-      List<String> errorMessages = encryptedPasswordErrors.stream()
-        .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
-
-      assertTrue(errorMessages.contains("EncryptedPassword can't be blank"));
-      assertTrue(errorMessages.contains("EncryptedPassword should be at least 6 characters"));
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
+      assertEquals(1, violations.size());
+      assertEquals("EncryptedPassword can't be blank", violations.iterator().next().getMessage());
         }
 
       @Test
@@ -90,20 +78,16 @@ public class UserFormUnitTest {
       @Test
      public void emailはアットマークを含まないとバリデーションエラーが発生する() {
       userForm.setEmail("invalidEmail");
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(1, violations.size());
       assertEquals("Email should be valid", violations.iterator().next().getMessage());
-        }
-
-      @Test
-      public void 重複したemailを登録しようとするとバリデーションエラーが発生する() {
         }
 
       @Test
       public void encryptedPasswordが5文字以下ではバリデーションエラーが発生する() {
       String password = "a".repeat(5);
       userForm.setEncryptedPassword(password); 
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(1, violations.size());
       assertEquals("EncryptedPassword should be at least 6 characters", violations.iterator().next().getMessage());
         }
@@ -111,7 +95,7 @@ public class UserFormUnitTest {
       @Test
       public void profileが空の場合バリデーションエラーが発生する() {
       userForm.setProfile("");
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(1, violations.size());
       assertEquals("Profile can't be blank", violations.iterator().next().getMessage());
         }
@@ -119,7 +103,7 @@ public class UserFormUnitTest {
       @Test
       public void occupationが空の場合バリデーションエラーが発生する() {
       userForm.setOccupation("");
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(1, violations.size());
       assertEquals("Occupation can't be blank", violations.iterator().next().getMessage());
         }
@@ -127,7 +111,7 @@ public class UserFormUnitTest {
       @Test
       public void positionが空の場合バリデーションエラーが発生する() {
       userForm.setPosition("");
-      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+      Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm, ValidationOrder.class);
       assertEquals(1, violations.size());
       assertEquals("Position can't be blank", violations.iterator().next().getMessage());
         }

@@ -11,7 +11,7 @@ public class PrototypeFormFactory {
 
   public static PrototypeForm createPrototype() {
     PrototypeForm prototypeForm = new PrototypeForm();
-    prototypeForm.setTitle(faker.lorem().sentence(10));
+    prototypeForm.setTitle(faker.lorem().characters(10, 90));
     prototypeForm.setCatchCopy(faker.lorem().sentence());
     prototypeForm.setConcept(faker.lorem().sentence());
 
